@@ -1,10 +1,21 @@
-// If life was easy, we could just do things the easy way:
-// var getElementsByClassName = function (className) {
-//   return document.getElementsByClassName(className);
-// };
+var getElementsByClassName = function(className, reference) {
+  var list = [];
 
-// But instead we're going to implement it from scratch:
-var getElementsByClassName = function(className
-) {
-  // your code here
-};
+  //Start at body. After, children are passed recursively into reference
+  reference = reference || document.body;
+
+  //Checks if target class is in list of classes for current element
+  if(reference.classList.contains(className)) {
+    list.push(reference);
+  };
+
+  //Recursive call to go deeper until reaches childless element
+  for (var i = 0; i < reference.children.length; i++) {
+   list.push(getElementsByClassName(className, reference.children[i]));
+  }
+
+  //prevent nested arrays from recursive calls
+  list = _.flatten(list);
+
+  return list;
+}
